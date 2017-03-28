@@ -1,20 +1,61 @@
+import os
+#This method includes all the Package that required for Python GUI
+commands = ['sudo apt-get install python-tk > /dev/null', 'sudo apt-get install python-imaging -t > /dev/null', 'sudo apt-get install python-pil > /dev/null','sudo apt-get install inkscape > /dev/null','clear']
+count = 0
+for com in commands:
+	_=os.system(com)
+	count += 1
+
 import Tkinter
 import tkMessageBox
 import sys
 #Library to Call .sh file in Python Script
 import subprocess
-import os
 
+from os.path import basename
 
-#root = Tkinter.Tk()
-#root.iconbitmap('favicon.ico')
+#top.iconbitmap('favicon.ico')
+
 
 #Top is the Master Frame of This Window
 top = Tkinter.Tk()
-top.resizable(width=True, height=True)
-top.minsize(width=30, height=666)
+#top('Akshar')
+top.resizable(width=False, height=False)
+
 #frame1 = Tkinter.Frame(top)
 #frame1.pack(side=Tkinter.TOP, fill=Tkinter.X)
+
+def Convert():
+	j=[];
+
+	str3="/tmp"
+	os.chdir(str3)
+	if not(os.path.isdir('./Apps_Control_img')):
+		proc=subprocess.Popen(["mkdir","Apps_Control_img"])
+
+	l=["accessories-calculator.svg","accessories-text-editor.svg","system-upgrade.svg","calendar.svg","xfsm-shutdown.svg" , "bash.svg","applets-screenshooter.svg"]
+	for i in l:
+		a=basename(i)	
+		CopyTo(a);
+		str4="/tmp/Apps_Control_img/"
+		os.chdir(str4)
+		j=os.path.splitext(a)[0]+".png"
+		#proc2 = subprocess.call(["clear"])		
+		proc =  subprocess.call(["inkscape","-z", i ,"-e" , j])
+		proc1 = subprocess.call(["clear"])
+#		proc3 = subprocess.call(["clear"])
+#		proc4 = subprocess.call(["clear"])
+#		proc5 = subprocess.call(["clear"])
+#		proc6 = subprocess.call(["clear"])
+#		proc7 = subprocess.call(["clear"])
+#		proc8 = subprocess.call(["clear"])
+#		proc9 = subprocess.call(["clear"])
+
+def CopyTo(fname):
+	#print fname
+	src="/usr/share/icons/Humanity/apps/48/" + fname
+	dest="/tmp/Apps_Control_img/" + fname
+	proc=subprocess.call(["cp",src,dest])
 	
 #This is method to open Text Editor(gedit) App 
 def buttonTextEditor():
@@ -52,9 +93,9 @@ def buttonCalendar():
 	proc = subprocess.Popen(['gnome-calendar'])
 
 #This is method to open Home App
-def buttonHome():
-	proc = os.fork()
-	proc.subprocess.Popen(['gnome-nautilus'])
+#def buttonHome():
+#	proc = os.fork()
+#	proc.subprocess.Popen(['gnome-nautilus'])
 
 
 #This is method to open Exit App 
@@ -64,46 +105,61 @@ def buttonExit():
 #This is method to open Shutdown App 
 def buttonShutdown():
 	tkMessageBox.showinfo("Bye Bye... See you Soon... !!!")
-	proc = subprocess.Popen(['shutdown now'])
-
-#This method includes all the Package that required for Python GUI
-def installPackages():
-#	proc = subprocess.Popen(['sudo apt-get install python-tk \ && sudo apt-get install python-imaging-t \ && sudo apt-get install python-pil'])
-	commands = ['sudo apt-get install python-tk', 'sudo apt-get install python-imaging-t', 'sudo apt-get install python-pip']
-	count = 0
-	for com in commands:
-	    print "Start execute commands.."
-	    os.system(com)
-	    count += 1
+	proc = subprocess.call(["shutdown","now"])
 
 
-texteditorimg = Tkinter.PhotoImage(file="texteditorcrop.png")
+
+Convert()
+#path="/usr/share/icons/hicolor/48x48/apps"
+path="/tmp/Apps_Control_img/"
+texteditorimg = Tkinter.PhotoImage(file=path+"accessories-text-editor.png")
+terminalimg = Tkinter.PhotoImage(file=path+"bash.png")
+cameraimg = Tkinter.PhotoImage(file=path+"applets-screenshooter.png")
+settingsimg = Tkinter.PhotoImage(file=path+"system-upgrade.png")
+calculatorimg = Tkinter.PhotoImage(file=path+"accessories-calculator.png")
+calendarimg = Tkinter.PhotoImage(file=path+"calendar.png")
+shutdownimg = Tkinter.PhotoImage(file=path+"xfsm-shutdown.png")
+#To create a frame for writing text in button
+frame1 = Tkinter.Frame(top)
+frame1.pack()
 
 
-installpackages = Tkinter.Button(top, text ="Install Packages", command =installPackages)
-textEditor = Tkinter.Button(top,image=texteditorimg,text ="Text Editor",width=70,height=70, command =buttonTextEditor)
-
-#textEditor1 = Label(top,text="Text Editor2")
-terminal = Tkinter.Button(top, text ="Terminal", command = buttonTerminal)
-camera = Tkinter.Button(top, text ="Camera", command = buttonCamera)
-setting = Tkinter.Button(top, text ="Setting", command = buttonSetting)
-calculator = Tkinter.Button(top, text ="Calculator", command = buttonCalculator)
-calendar = Tkinter.Button(top, text ="Calendar", command = buttonCalendar)
-home = Tkinter.Button(top, text ="Home", command = buttonHome)
+#installpackages = Tkinter.Button(top, text ="Install Packages", command =installPackages)
+textEditor = Tkinter.Button(frame1,compound=Tkinter.TOP,width=100,height=100,image=texteditorimg,text ="Text Editor", command =buttonTextEditor)
+terminal = Tkinter.Button(frame1,compound=Tkinter.TOP,width=100,height=100,image=terminalimg,text ="Terminal", command = buttonTerminal)
+camera = Tkinter.Button(frame1,compound=Tkinter.TOP,width=100,height=100,image=cameraimg,text ="Camera", command = buttonCamera)
+setting = Tkinter.Button(frame1,compound=Tkinter.TOP,width=100,height=100,image=settingsimg,text ="Setting", command = buttonSetting)
+calculator = Tkinter.Button(frame1,compound=Tkinter.TOP,width=100,height=100,image=calculatorimg, text ="Calculator", command = buttonCalculator)
+calendar = Tkinter.Button(frame1,compound=Tkinter.TOP,width=100,height=100,image=calendarimg,text ="Calendar", command = buttonCalendar)
+#home = Tkinter.Button(top, text ="Home", command = buttonHome)
 exit = Tkinter.Button(top, text ="Exit", command = buttonExit)
-shutdown = Tkinter.Button(top, text ="Shutdown", command = buttonShutdown)
+shutdown = Tkinter.Button(frame1,compound=Tkinter.TOP,width=100,height=100,image=shutdownimg, text ="Shutdown", command = buttonShutdown)
 
-installpackages.pack()
-textEditor.pack()
+#installpackages.pack()
+shutdown.place(x=70,y=70)
+shutdown.pack(side=Tkinter.RIGHT,padx=2,pady=2)
 
-terminal.pack()
-camera.pack()
-setting.pack()
-calculator.pack()
-calendar.pack()
-home.pack()
+textEditor.place(x=10,y=10)
+textEditor.pack(side=Tkinter.RIGHT,padx=2,pady=2)
+
+terminal.place(x=20,y=20)
+terminal.pack(side=Tkinter.RIGHT,padx=2,pady=2)
+
+setting.place(x=40,y=40)
+setting.pack(side=Tkinter.RIGHT,padx=2,pady=2)
+
+calculator.place(x=50,y=50)
+calculator.pack(side=Tkinter.RIGHT,padx=2,pady=2)
+
+calendar.place(x=60,y=60)
+calendar.pack(side=Tkinter.RIGHT,padx=2,pady=2)
+
+camera.place(x=30,y=30)
+camera.pack(side=Tkinter.RIGHT,padx=2,pady=2)
+#home.pack()
+
 exit.pack()
-shutdown.pack()
+
 
 	
 top.mainloop()
