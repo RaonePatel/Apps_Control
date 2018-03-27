@@ -43,6 +43,7 @@ def Convert():
 		#proc2 = subprocess.call(["clear"])		
 		proc =  subprocess.call(["inkscape","-z", i ,"-e" , j])
 		proc1 = subprocess.call(["clear"])
+		#This is all Process
 #		proc3 = subprocess.call(["clear"])
 #		proc4 = subprocess.call(["clear"])
 #		proc5 = subprocess.call(["clear"])
